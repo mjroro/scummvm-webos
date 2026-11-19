@@ -205,7 +205,7 @@ awk '
 
 required_engine_descriptions=(
   "SCUMM [v0-v6 games] [v7 & v8 games]"
-  "SCI32 games"
+  "SCI [all games]"
   "Mohawk [Living Books] [Myst] [Riven: The Sequel to Myst]"
   "Groovie [7th Guest]"
   "Cinematique evo 1"
