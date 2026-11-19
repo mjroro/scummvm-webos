@@ -25,7 +25,7 @@ env:
   SCUMMVM_REF: ${{ inputs.scummvm_ref || 'v2026.3.0' }}
   SDK_ARCHIVE: arm-webos-linux-gnueabi_sdk-buildroot-x86_64.tar.gz
   SDL2_ARCHIVE_URL: https://github.com/webosbrew/SDL-webOS/releases/download/release-2.32.10-webos.1/SDL2-2.32.10-webos-abi.tar.gz
-  WEBOS_PACKAGE_VERSION: 1.3.0
+  WEBOS_PACKAGE_VERSION: 1.3.1
 
 jobs:
   build:
@@ -160,6 +160,11 @@ jobs:
           done
           grep -E '^#define (USE_MT32EMU|USE_OGG|USE_VORBIS|USE_FLAC|USE_MAD|USE_MPEG2|USE_THEORADEC)' \
             build/config.h
+          grep -Eq '^ENABLE_SCI32[[:space:]]*=[[:space:]]*1([[:space:]]|$)' build/config.mk
+          grep -Eq '^#define USE_HIGHRES' build/config.h
+          jq -e '.id == "org.scummvm.scummvm" and .version == "1.3.1"' dist/package/appinfo.json
+          readelf -h dist/package/scummvm.bin | grep -E 'Machine:[[:space:]]*ARM'
+          readelf -h dist/package/scummvm.bin | grep -E 'Class:[[:space:]]*ELF32'
           cat dist/*.sha256
 
       - name: Generate Homebrew Channel manifest
