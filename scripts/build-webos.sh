@@ -91,6 +91,7 @@ engines=(
   queen
   saga
   sci
+  sci32
   scumm
   scumm_7_8
   sky
@@ -204,6 +205,7 @@ awk '
 
 required_engine_descriptions=(
   "SCUMM [v0-v6 games] [v7 & v8 games]"
+  "SCI32 games"
   "Mohawk [Living Books] [Myst] [Riven: The Sequel to Myst]"
   "Groovie [7th Guest]"
   "Cinematique evo 1"
@@ -231,6 +233,7 @@ done
 
 required_feature_defines=(
   USE_MT32EMU
+  USE_HIGHRES
   USE_OGG
   USE_VORBIS
   USE_FLAC
@@ -249,6 +252,11 @@ for define in "${required_feature_defines[@]}"; do
     exit 1
   fi
 done
+
+if ! grep -Eq '^ENABLE_SCI32[[:space:]]*=[[:space:]]*1([[:space:]]|$)' "$build_dir/config.mk"; then
+  echo "SCI32 was not enabled in the final engine configuration." >&2
+  exit 1
+fi
 
 make -j"${JOBS:-$(getconf _NPROCESSORS_ONLN)}" scummvm
 
